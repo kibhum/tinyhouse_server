@@ -14,6 +14,7 @@ export const connectDatabase = async (): Promise<Database> => {
   const db = client.db("main");
   await client.connect();
   console.log("Connected successfully to MongoDB");
+  
   return {
     listings: db.collection("test_listings"),
   };
