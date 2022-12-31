@@ -12,6 +12,9 @@ const mount = async (app: Application) => {
   server.applyMiddleware({ app, path: "/api" });
   app.listen(process.env.PORT, () => {
     console.log(`Server running on ${process.env.PORT}`);
+    console.log(
+      `GraphQL Server running on http://localhost:${process.env.PORT}/api`
+    );
   });
 };
 mount(express());
