@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import CookieParser from "cookie-parser";
 dotenv.config({ path: "./config.env" });
 import express, { Application } from "express";
 import { ApolloServer } from "apollo-server-express";
@@ -7,7 +8,12 @@ import { connectDatabase } from "./database";
 
 const mount = async (app: Application) => {
   const db = await connectDatabase();
-  const server = new ApolloServer({ typeDefs, resolvers, context: { db } });
+  app.use(CookieParser(process.env.SECRET));
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req, res }) => ({ req, res, db }),
+  });
   await server.start();
   server.applyMiddleware({ app, path: "/api" });
   app.listen(process.env.PORT, () => {
