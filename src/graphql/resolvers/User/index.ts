@@ -10,7 +10,7 @@ import {
 import { Database, User } from "../../../lib/types";
 import { authorize } from "../../../lib/utils";
 
-export const userResolver: IResolvers = {
+export const userResolvers: IResolvers = {
   Query: {
     user: async (
       _root: undefined,
@@ -58,9 +58,9 @@ export const userResolver: IResolvers = {
         let cursor = db.bookings.find({
           _id: { $in: user.bookings },
         });
+        data.total = await cursor.count();
         cursor = cursor.skip(page > 0 ? page - 1 * limit : 0);
         cursor = cursor.limit(limit);
-        data.total = await cursor.count();
         data.result = await cursor.toArray();
         return data;
       } catch (error) {
@@ -78,9 +78,9 @@ export const userResolver: IResolvers = {
           result: [],
         };
         let cursor = db.listings.find({ _id: { $in: user.listings } });
+        data.total = await cursor.count();
         cursor = cursor.skip(page > 0 ? (page - 1) * limit : 0);
         cursor = cursor.limit(limit);
-        data.total = await cursor.count();
         data.result = await cursor.toArray();
         return data;
       } catch (error) {
