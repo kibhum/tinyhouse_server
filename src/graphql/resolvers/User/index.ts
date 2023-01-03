@@ -78,7 +78,7 @@ export const userResolver: IResolvers = {
           result: [],
         };
         let cursor = db.listings.find({ _id: { $in: user.listings } });
-        cursor = cursor.skip(page > 0 ? page - 1 * limit : 0);
+        cursor = cursor.skip(page > 0 ? (page - 1) * limit : 0);
         cursor = cursor.limit(limit);
         data.total = await cursor.count();
         data.result = await cursor.toArray();
